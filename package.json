@@ -1,10 +1,10 @@
 {
-  "name": "mern-skeleton",
+  "name": "my-social",
   "version": "1.0.0",
   "main": "index.js",
   "author": "Amir Liberzon",
-  "homepage": "https://github.com/amirlib/mern-skeleton#readme",
-  "repository": "github:amirlib/mern-skeleton",
+  "homepage": "https://github.com/amirlib/my-social#readme",
+  "repository": "github:amirlib/my-social",
   "license": "MIT",
   "scripts": {
     "build": "webpack --config webpack.client.prod.js && webpack --mode=production --config webpack.server.js",

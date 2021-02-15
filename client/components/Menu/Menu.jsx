@@ -25,7 +25,7 @@ const Menu = withRouter(({ history }) => {
           color="inherit"
           variant="h6"
         >
-          MERN Skeleton
+          My Social
         </Typography>
 
         <MenuIconLink
