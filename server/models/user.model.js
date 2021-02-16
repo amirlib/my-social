@@ -4,6 +4,10 @@ import mongoose from 'mongoose';
 
 const UserSchema = new mongoose.Schema(
   {
+    about: {
+      trim: true,
+      type: String,
+    },
     email: {
       lowercase: true,
       match: [/.+@.+\..+/, 'Please fill a valid email address'],
