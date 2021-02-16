@@ -26,9 +26,6 @@ const EditProfileForm = (props) => {
         <EmailField value={values.email} />
         <br />
 
-        <EmailField value={values.email} />
-        <br />
-
         <PasswordField value={values.password} />
       </FormContext.Provider>
 
