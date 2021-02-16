@@ -31,6 +31,7 @@ const EditProfilePage = () => {
   const [error, setError] = useState('');
   const [open, setOpen] = useState(false);
   const [values, setValues] = useState({
+    about: '',
     email: '',
     name: '',
     password: '',

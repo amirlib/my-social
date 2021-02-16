@@ -20,6 +20,9 @@ const EditProfileForm = (props) => {
         <NameField value={values.name} />
         <br />
 
+        <AboutField value={values.about} />
+        <br />
+
         <EmailField value={values.email} />
         <br />
 
@@ -38,6 +41,7 @@ EditProfileForm.propTypes = {
   error: PropTypes.string,
   handleChange: PropTypes.func.isRequired,
   values: PropTypes.shape({
+    about: PropTypes.string,
     email: PropTypes.string,
     name: PropTypes.string,
     password: PropTypes.string,
@@ -47,6 +51,7 @@ EditProfileForm.propTypes = {
 EditProfileForm.defaultProps = {
   error: '',
   values: {
+    about: '',
     email: '',
     name: '',
     password: '',
