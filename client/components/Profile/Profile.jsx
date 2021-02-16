@@ -48,6 +48,10 @@ const Profile = (props) => {
         <Divider />
 
         <ListItem>
+          <ListItemText primary={profile.about} />
+        </ListItem>
+
+        <ListItem>
           <ListItemText primary={`Joined: ${new Date(profile.createdAt).toDateString()}`} />
         </ListItem>
       </List>
@@ -58,6 +62,7 @@ const Profile = (props) => {
 Profile.propTypes = {
   profile: PropTypes.shape({
     _id: PropTypes.string,
+    about: PropTypes.string,
     createdAt: PropTypes.string,
     email: PropTypes.string,
     name: PropTypes.string,
@@ -67,6 +72,7 @@ Profile.propTypes = {
 Profile.defaultProps = {
   profile: PropTypes.shape({
     _id: '',
+    about: '',
     createdAt: '',
     email: '',
     name: '',

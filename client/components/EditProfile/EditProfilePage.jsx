@@ -57,6 +57,7 @@ const EditProfilePage = () => {
         setError('');
         setValues({
           ...values,
+          about: res.about,
           email: res.email,
           name: res.name,
         });
