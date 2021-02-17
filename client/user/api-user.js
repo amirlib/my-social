@@ -77,11 +77,10 @@ const update = async (userId, user) => {
     const response = await fetch(
       `/api/users/${userId}`,
       {
-        body: JSON.stringify(user),
+        body: user,
         credentials: 'include',
         headers: {
           Accept: 'application/json',
-          'Content-Type': 'application/json',
         },
         method: 'PATCH',
       },
