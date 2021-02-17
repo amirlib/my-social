@@ -2,10 +2,11 @@ import validator from 'validator';
 import validate from './validator';
 
 const profileSanitizer = (values) => ({
-  about: validator.escape(values.about.trim()),
+  about: validator.escape(values.about.trim()) || undefined,
   email: validator.escape(values.email.trim()) || undefined,
   name: validator.escape(values.name.trim()) || undefined,
   password: validator.escape(values.password.trim()) || undefined,
+  photoPicture: values.photoPicture || undefined,
 });
 
 const profileValidator = (values) => {
