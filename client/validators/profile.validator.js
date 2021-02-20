@@ -6,7 +6,7 @@ const profileSanitizer = (values) => ({
   email: validator.escape(values.email.trim()) || undefined,
   name: validator.escape(values.name.trim()) || undefined,
   password: validator.escape(values.password.trim()) || undefined,
-  profilePicture: values.profilePicture || undefined,
+  profilePicture: values.profilePicture,
 });
 
 const profileValidator = (values) => {
