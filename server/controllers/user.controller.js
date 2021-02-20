@@ -1,6 +1,7 @@
 import extend from 'lodash/extend';
-import User from '../models/user.model';
+import { uploadProfilePicture } from '../aws/user.aws';
 import { getErrorMessage } from '../helpers/dbErrorHandler';
+import User from '../models/user.model';
 
 const create = async (req, res) => {
   const { email, name, password } = req.body;
@@ -36,7 +37,9 @@ const list = async (req, res) => {
   try {
     const users = await User.find().select('name email createdAt');
 
-    return res.json(users);
+    return res
+      .status(200)
+      .json(users);
   } catch (err) {
     return res
       .status(400)
@@ -51,7 +54,9 @@ const remove = async (req, res) => {
     const { user } = req;
     const deletedUser = await user.remove();
 
-    return res.json(deletedUser);
+    return res
+      .status(200)
+      .json(deletedUser);
   } catch (err) {
     return res
       .status(400)
@@ -64,6 +69,12 @@ const update = async (req, res) => {
     let { user } = req;
 
     user = extend(user, req.body);
+
+    if (req.file) {
+      const response = await uploadProfilePicture(req.file, user._id);
+
+      if (response.Location) user.profilePictureUrl = response.Location;
+    }
 
     await user.save();
 
