@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import EditProfilePicture from './EditProfilePicture';
 import AboutField from '../UI/fields/AboutField';
 import EmailField from '../UI/fields/EmailField';
 import NameField from '../UI/fields/NameField';
@@ -17,6 +18,9 @@ const EditProfileForm = (props) => {
   return (
     <>
       <FormContext.Provider value={{ handleChange }}>
+        <EditProfilePicture profilePicture={values.profilePicture} />
+        <br />
+
         <NameField value={values.name} />
         <br />
 
@@ -42,6 +46,7 @@ EditProfileForm.propTypes = {
     email: PropTypes.string,
     name: PropTypes.string,
     password: PropTypes.string,
+    profilePicture: PropTypes.shape({}),
   }),
 };
 
@@ -52,6 +57,7 @@ EditProfileForm.defaultProps = {
     email: '',
     name: '',
     password: '',
+    profilePicture: {},
   },
 };
 

@@ -10,6 +10,7 @@ import EditProfileActions from './EditProfileActions';
 import EditProfileForm from './EditProfileForm';
 import NoticeDialog from '../UI/dialogs/NoticeDialog';
 import TitleTypography from '../UI/typographies/TitleTypography';
+import { createFormData } from '../../helpers/formData.helper';
 import { TitleType } from '../../style/types';
 import { profileSanitizer, profileValidator } from '../../validators/profile.validator';
 
@@ -30,11 +31,13 @@ const EditProfilePage = () => {
   const { user, verify } = useContext(AuthContext);
   const [error, setError] = useState('');
   const [open, setOpen] = useState(false);
+  const [profilePictureUrl, setProfilePictureUrl] = useState('');
   const [values, setValues] = useState({
     about: '',
     email: '',
     name: '',
     password: '',
+    profilePicture: {},
   });
 
   useEffect(() => {
@@ -55,9 +58,10 @@ const EditProfilePage = () => {
         setError(res.error);
       } else {
         setError('');
+        setProfilePictureUrl(res.profilePictureUrl ? res.profilePictureUrl : '');
         setValues({
           ...values,
-          about: res.about,
+          about: res.about ? res.about : '',
           email: res.email,
           name: res.name,
         });
@@ -87,9 +91,10 @@ const EditProfilePage = () => {
       return;
     }
 
+    const userData = createFormData(sanitizedValues);
     const res = await update(
       params.userId,
-      sanitizedValues,
+      userData,
     );
 
     if (res && res.error) {
@@ -101,7 +106,10 @@ const EditProfilePage = () => {
   };
 
   const handleChange = (evt) => {
-    const { name, value } = evt.target;
+    const { name } = evt.target;
+    const value = name === 'profilePicture'
+      ? evt.target.files[0]
+      : evt.target.value;
 
     setValues({
       ...values,
