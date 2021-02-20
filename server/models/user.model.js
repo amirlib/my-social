@@ -28,8 +28,8 @@ const UserSchema = new mongoose.Schema(
       required: 'Password is required',
       type: String,
     },
-    profilePicture: {
-      data: Buffer,
+    profilePictureUrl: {
+      type: String,
     },
     tokens: [{
       token: {
