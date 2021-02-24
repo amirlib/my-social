@@ -5,12 +5,12 @@ import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import { makeStyles } from '@material-ui/core/styles';
-import RedirectDialog from '../UI/dialogs/RedirectDialog';
-import { AuthContext } from '../../contexts/auth.context';
-import { userSanitizer, userValidator } from '../../validators/signup.validator';
-import { create } from '../../user/api-user';
 import SignupForm from './SignupForm';
+import RedirectDialog from '../UI/dialogs/RedirectDialog';
 import TitleTypography from '../UI/typographies/TitleTypography';
+import { AuthContext } from '../../contexts/auth.context';
+import { sanitizeValues, validateUser } from '../../validators/values.validator';
+import { create } from '../../user/user.api';
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -59,8 +59,8 @@ const Signup = () => {
   const signupClick = async () => {
     if (error) setError('');
 
-    const sanitizedValues = userSanitizer(values);
-    const validations = userValidator(sanitizedValues);
+    const sanitizedValues = sanitizeValues(values);
+    const validations = validateUser(sanitizedValues);
 
     if (validations.error) {
       setError(validations.error);

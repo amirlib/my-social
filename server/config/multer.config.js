@@ -1,14 +1,22 @@
 import multer from 'multer';
-import { validateImageFile } from '../../validators/file.validator';
-import InvalidFileError from '../../validators/InvalidFileError';
+import { validateImageFileMulter } from '../../validators/file.validator';
+import InvalidFileError from '../../validators/Errors/InvalidFileError';
 
-const imageExtensions = ['jpg', 'jpeg', 'png'];
-const imagesSubTypes = ['jpeg', 'pjpeg', 'png'];
-const types = ['image'];
+const extensions = ['jpg', 'jpeg', 'png'];
+const types = ['image/jpeg', 'image/pjpeg', 'image/png'];
 
 const fileFilter = function (req, file, cb) {
   try {
-    validateImageFile(file, types, imagesSubTypes, imageExtensions);
+    validateImageFileMulter(
+      file,
+      {
+        fieldName: 'Profile picture',
+        options: {
+          extensions,
+          types,
+        },
+      },
+    );
 
     return cb(null, true);
   } catch (err) {
@@ -25,8 +33,10 @@ const multerConfig = {
 
 const multerErrorHandling = (err, req, res, next) => {
   if (err instanceof multer.MulterError || err instanceof InvalidFileError) {
-    res.status(400).send({ error: err.message });
+    return res.status(400).send({ error: err.message });
   }
+
+  return res.status(400).send({ error: 'Error has occurred in the uploading process' });
 };
 
 export { multerConfig, multerErrorHandling };

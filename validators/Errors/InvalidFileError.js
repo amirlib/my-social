@@ -1,15 +1,17 @@
 const errorMessages = {
+  ERR_FILE_EXT: 'file extension not supported',
+  ERR_FILE_NOT_EXISTS: 'file is required',
+  ERR_FILE_SIZE: 'file size is not between the valid range',
+  ERR_FILE_TYPE: 'file format not supported',
   ERR_INVALID_FILE: 'Invalid file',
-  ERR_FILE_TYPE: 'File format not supported',
-  ERR_FILE_SUB_TYPE: 'File format not supported',
-  ERR_FILE_EXT: 'File extension not supported',
 };
 
 class InvalidFileError extends Error {
-  constructor(code) {
+  constructor(code, fieldName = '') {
     super();
 
     this.code = code;
+    this.fieldName = fieldName;
     this.message = errorMessages[code];
     this.name = 'InvalidFileError';
 

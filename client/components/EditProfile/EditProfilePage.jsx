@@ -5,14 +5,14 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import { makeStyles } from '@material-ui/core/styles';
 import { AuthContext } from '../../contexts/auth.context';
-import { read, update } from '../../user/api-user';
+import { read, update } from '../../user/user.api';
 import EditProfileActions from './EditProfileActions';
 import EditProfileForm from './EditProfileForm';
 import NoticeDialog from '../UI/dialogs/NoticeDialog';
 import TitleTypography from '../UI/typographies/TitleTypography';
 import { createFormData } from '../../helpers/formData.helper';
 import { TitleType } from '../../style/types';
-import { profileSanitizer, profileValidator } from '../../validators/profile.validator';
+import { sanitizeValues, validateProfile } from '../../validators/values.validator';
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -82,8 +82,8 @@ const EditProfilePage = () => {
   const handleSaveClick = async () => {
     if (error) setError('');
 
-    const sanitizedValues = profileSanitizer(values);
-    const validations = profileValidator(sanitizedValues);
+    const sanitizedValues = sanitizeValues(values);
+    const validations = validateProfile(sanitizedValues);
 
     if (validations.error) {
       setError(validations.error);
@@ -91,10 +91,10 @@ const EditProfilePage = () => {
       return;
     }
 
-    const userData = createFormData(sanitizedValues);
+    const profileData = createFormData(sanitizedValues);
     const res = await update(
       params.userId,
-      userData,
+      profileData,
     );
 
     if (res && res.error) {

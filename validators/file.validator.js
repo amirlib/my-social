@@ -1,24 +1,10 @@
-import InvalidFileError from './InvalidFileError';
+import InvalidFileError from './Errors/InvalidFileError';
 
 const createExtensionRegExp = (extensions) => {
   const reducer = (acc, val) => `${acc}|${val}`;
   const regex = extensions.reduce(reducer);
 
   return `\\.(${regex})$`;
-};
-
-const getFileName = (file) => {
-  if (file.originalname && typeof file.originalname === 'string') return file.originalname;
-  if (file.name && typeof file.name === 'string') return file.name;
-
-  throw new InvalidFileError('ERR_INVALID_FILE');
-};
-
-const getFileType = (file) => {
-  if (file.type && typeof file.type === 'string') return file.type;
-  if (file.mimetype && typeof file.mimetype === 'string') return file.mimetype;
-
-  throw new InvalidFileError('ERR_INVALID_FILE');
 };
 
 const isValidExt = (name, extensions) => {
@@ -33,37 +19,73 @@ const isValidExt = (name, extensions) => {
   return true;
 };
 
+const isValidSize = (fileSize, maxSize, minSize) => {
+  if (fileSize <= maxSize && fileSize >= minSize) return true;
+
+  return false;
+};
+
 const isValidType = (fileType, types) => {
-  const type = fileType.split('/')[0];
-
-  if (types.some((value) => type === value)) return true;
+  if (types.some((type) => type === fileType)) return true;
 
   return false;
 };
 
-const isValidSubType = (fileType, sunTypes) => {
-  const subType = fileType.split('/')[1];
-
-  if (sunTypes.some((value) => subType === value)) return true;
-
-  return false;
+const defaultOptions = {
+  extensions: [],
+  maxSize: Number.MAX_SAFE_INTEGER,
+  minSize: 0,
+  required: false,
+  types: [],
 };
 
-const validateImageFile = (file, types, subTypes, extensions) => {
-  const fileName = getFileName(file);
-  const fileType = getFileType(file);
+const validateImageFileBrowser = (file, attributes) => {
+  const { fieldName, options = defaultOptions } = attributes;
+  const {
+    extensions,
+    maxSize,
+    minSize,
+    required,
+    types,
+  } = options;
 
-  if (!isValidType(fileType, types)) {
-    throw new InvalidFileError('ERR_FILE_TYPE');
+  if (!file || (file instanceof File === false && Object.getOwnPropertyNames(file).length === 0)) {
+    if (required) throw new InvalidFileError('ERR_FILE_NOT_EXISTS', fieldName);
+
+    return;
   }
 
-  if (!isValidSubType(fileType, subTypes)) {
-    throw new InvalidFileError('ERR_FILE_SUB_TYPE');
+  if (file instanceof File === false) {
+    throw new InvalidFileError('ERR_INVALID_FILE');
   }
 
-  if (!isValidExt(fileName, extensions)) {
-    throw new InvalidFileError('ERR_FILE_EXT');
+  if (!isValidType(file.type, types)) {
+    throw new InvalidFileError('ERR_FILE_TYPE', fieldName);
+  }
+
+  if (!isValidExt(file.name, extensions)) {
+    throw new InvalidFileError('ERR_FILE_EXT', fieldName);
+  }
+
+  if (!isValidSize(file.size, maxSize, minSize)) {
+    throw new InvalidFileError('ERR_FILE_SIZE', fieldName);
   }
 };
 
-export { validateImageFile };
+const validateImageFileMulter = (file, attributes) => {
+  const { fieldName, options = defaultOptions } = attributes;
+  const {
+    extensions,
+    types,
+  } = options;
+
+  if (!isValidType(file.mimetype, types)) {
+    throw new InvalidFileError('ERR_FILE_TYPE', fieldName);
+  }
+
+  if (!isValidExt(file.originalname, extensions)) {
+    throw new InvalidFileError('ERR_FILE_EXT', fieldName);
+  }
+};
+
+export { validateImageFileBrowser, validateImageFileMulter };
