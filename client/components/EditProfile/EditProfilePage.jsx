@@ -10,7 +10,7 @@ import EditProfileActions from './EditProfileActions';
 import EditProfileForm from './EditProfileForm';
 import NoticeDialog from '../UI/dialogs/NoticeDialog';
 import TitleTypography from '../UI/typographies/TitleTypography';
-import { createFormData } from '../../helpers/formData.helper';
+import { createProfileFormData } from '../../helpers/formData.helper';
 import { TitleType } from '../../style/types';
 import { sanitizeValues, validateProfile } from '../../validators/values.validator';
 
@@ -91,7 +91,7 @@ const EditProfilePage = () => {
       return;
     }
 
-    const profileData = createFormData(sanitizedValues);
+    const profileData = createProfileFormData(sanitizedValues);
     const res = await update(
       params.userId,
       profileData,
