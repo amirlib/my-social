@@ -35,10 +35,10 @@ const list = async (signal) => {
   }
 };
 
-const read = async (userId, signal) => {
+const read = async (id, signal) => {
   try {
     const response = await fetch(
-      `/api/users/${userId}`,
+      `/api/users/${id}`,
       {
         credentials: 'include',
         headers: {
@@ -56,10 +56,10 @@ const read = async (userId, signal) => {
   }
 };
 
-const remove = async (userId) => {
+const remove = async (id) => {
   try {
     const response = await fetch(
-      `/api/users/${userId}`,
+      `/api/users/${id}`,
       {
         credentials: 'include',
         method: 'DELETE',
@@ -72,16 +72,13 @@ const remove = async (userId) => {
   }
 };
 
-const update = async (userId, user) => {
+const update = async (id, profile) => {
   try {
     const response = await fetch(
-      `/api/users/${userId}`,
+      `/api/users/${id}`,
       {
-        body: user,
+        body: profile,
         credentials: 'include',
-        headers: {
-          Accept: 'application/json',
-        },
         method: 'PATCH',
       },
     );
