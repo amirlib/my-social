@@ -85,7 +85,7 @@ UserSchema.pre('save', async function (next) {
   if (!user.isModified('password')) return next();
 
   if (user.password.length < 6) {
-    throw this.invalidate('password', 'Password must be at least 6 characters');
+    throw this.invalidate('password', 'Password must be at least 5 characters');
   }
 
   this.password = await this.encryptPassword(user.password);
